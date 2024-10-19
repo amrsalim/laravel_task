@@ -1,0 +1,2934 @@
+{
+	"info": {
+		"_postman_id": "ab1c6898-b08e-44b8-90c6-2fa5ad04dbed",
+		"name": "Ensany Api",
+		"description": "Collection for managing users in Laravel 10 application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3632118"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 422\", function () {\r",
+									"  pm.expect(pm.response.code).to.equal(422);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - message and errors\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"\r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.message).to.exist;\r",
+									"  pm.expect(responseData.errors).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email field in the errors object is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.errors.email).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Email field should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has the required header - Content-Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email field in errors object is a valid email format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.errors.email[0]).to.match(/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/, \"Invalid email format\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Message field is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Mobile, photo, and admin_group_id fields are not present in the response\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.not.have.any.keys('mobile', 'photo', 'admin_group_id');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Check if the response contains the expected number of fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.property('message');\r",
+									"    pm.expect(responseData).to.have.property('errors');\r",
+									"    pm.expect(responseData.errors).to.have.property('email');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "John Doe 200",
+									"description": "string ",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "john.d8e5@example.com",
+									"description": "string email ",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "1234567890",
+									"description": "integer",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"description": "file | image",
+									"type": "file",
+									"src": "postman-cloud:///1ef0a685-0822-4e00-b3d2-3d0dc84cd6a6"
+								},
+								{
+									"key": "gender",
+									"value": "male",
+									"description": "Type: string, Allowed: 'male', 'female'",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456789",
+									"description": "string",
+									"type": "text"
+								},
+								{
+									"key": "account_type",
+									"value": "admin",
+									"description": "Type: string, Allowed: 'user', 'admin'",
+									"type": "text"
+								},
+								{
+									"key": "admin_group_id",
+									"value": "",
+									"description": "Type: uuid, Optional",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "123456789",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Create a new user with the provided details. All fields except `mobile`, `photo`, and `admin_group_id` are required."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "\"name\"",
+									"value": " \"Jane Doe\", // Type: string, Optional",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "jane.doe@example.com",
+									"description": " // Type: string, Optional",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "0987654321",
+									"description": "// Type: string, Optional",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "gender",
+									"value": "female",
+									"description": "// Type: string, Allowed: 'male', 'female', Optional",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "newsecurepassword",
+									"description": "/ Type: string, Optional",
+									"type": "text"
+								},
+								{
+									"key": "account_type",
+									"value": "user",
+									"description": "/ Type: string, Allowed: 'user', 'admin', Optional",
+									"type": "text"
+								},
+								{
+									"key": "admin_group_id",
+									"value": "new-uuid-of-admin-group",
+									"description": "// Type: uuid, Optional",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "fffa4b36-57a4-4b10-89a8-1cbfd67d0e33"
+								}
+							]
+						},
+						"description": "Update an existing user identified by `user_id`. All fields are optional."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status field in the response should exist and be a boolean\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.status).to.exist.and.to.be.a('boolean');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Result object and its nested fields are valid\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.result).to.be.an('object');\r",
+									"    \r",
+									"    // Check for nested fields\r",
+									"    pm.expect(responseData.result.data).to.be.an('array');\r",
+									"    responseData.result.data.forEach(function(user) {\r",
+									"        pm.expect(user).to.have.property('id').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('name').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('email').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('mobile').that.is.a('number').or.to.be.null;\r",
+									"        pm.expect(user).to.have.property('photo_url').that.is.a('string').or.to.be.null;\r",
+									"        pm.expect(user).to.have.property('gender').that.is.a('string').or.to.be.null;\r",
+									"        pm.expect(user).to.have.property('account_type').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('admin_group_id').that.is.a('number').or.to.be.null;\r",
+									"        pm.expect(user).to.have.property('email_verified_at').to.be.null;\r",
+									"        pm.expect(user).to.have.property('created_at').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('updated_at').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('deleted_at').to.be.null;\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Data array is present and not empty\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.result.data).to.exist.and.to.be.an('array').and.to.have.lengthOf.at.least(1, \"Data array should not be empty\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Retrieve a paginated list of all users with optional filters and sorting."
+					},
+					"response": [
+						{
+							"name": "Get All Users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 07:43:01 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 07:43:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "57"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"lynx.successfully\",\n    \"result\": {\n        \"data\": [\n            {\n                \"id\": \"d4447f83-afab-46b0-a450-d36518c1b068\",\n                \"name\": \"dipuhategu\",\n                \"email\": \"zihaqajedi@mailinator.com\",\n                \"mobile\": null,\n                \"photo_url\": \"http://127.0.0.1:8000/storage//storage/users/d4447f83-afab-46b0-a450-d36518c1b068/a8sNAQTrgaIibTHqg39NlEoQjM8hMpsornNpViEw.jpg\",\n                \"gender\": null,\n                \"account_type\": \"user\",\n                \"admin_group_id\": null,\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-16\",\n                \"updated_at\": \"2024-10-17\",\n                \"deleted_at\": \"2024-10-17\"\n            },\n            {\n                \"id\": \"aa98f1f3-ae93-40de-8fb4-3c19323a157e\",\n                \"name\": \"John Doe 200\",\n                \"email\": \"john.doe5@example.com\",\n                \"mobile\": null,\n                \"photo_url\": null,\n                \"gender\": null,\n                \"account_type\": \"admin\",\n                \"admin_group_id\": null,\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-16\",\n                \"updated_at\": \"2024-10-16\",\n                \"deleted_at\": null\n            },\n            {\n                \"id\": \"aa3d6268-836f-4887-9b61-c1b65fc7f010\",\n                \"name\": \"John Doe2\",\n                \"email\": \"joh1n@example.com\",\n                \"mobile\": null,\n                \"photo_url\": null,\n                \"gender\": null,\n                \"account_type\": \"user\",\n                \"admin_group_id\": null,\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-17\",\n                \"updated_at\": \"2024-10-17\",\n                \"deleted_at\": null\n            },\n            {\n                \"id\": \"9733a1a3-8147-4c9b-8021-d0613231bb11\",\n                \"name\": \"admin\",\n                \"email\": \"test@test.com\",\n                \"mobile\": null,\n                \"photo_url\": null,\n                \"gender\": null,\n                \"account_type\": \"admin\",\n                \"admin_group_id\": \"86ee9537-0aa9-4631-938d-511ac3b205df\",\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-16\",\n                \"updated_at\": \"2024-10-16\",\n                \"deleted_at\": null\n            },\n            {\n                \"id\": \"7f2d5566-f569-4b93-aae2-84dba0181ffc\",\n                \"name\": \"John Doe\",\n                \"email\": \"john.doe@example.com\",\n                \"mobile\": null,\n                \"photo_url\": null,\n                \"gender\": null,\n                \"account_type\": \"admin\",\n                \"admin_group_id\": null,\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-16\",\n                \"updated_at\": \"2024-10-16\",\n                \"deleted_at\": null\n            },\n            {\n                \"id\": \"7ef81b96-d451-4be2-a4cb-49b0b539bc20\",\n                \"name\": \"John Doe\",\n                \"email\": \"john9@example.com\",\n                \"mobile\": null,\n                \"photo_url\": null,\n                \"gender\": null,\n                \"account_type\": \"user\",\n                \"admin_group_id\": null,\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-17\",\n                \"updated_at\": \"2024-10-17\",\n                \"deleted_at\": null\n            },\n            {\n                \"id\": \"766269b8-3ffc-4902-8a76-a32b49f9860e\",\n                \"name\": \"John Doe\",\n                \"email\": \"john@example.com\",\n                \"mobile\": null,\n                \"photo_url\": null,\n                \"gender\": null,\n                \"account_type\": \"user\",\n                \"admin_group_id\": null,\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-17\",\n                \"updated_at\": \"2024-10-17\",\n                \"deleted_at\": null\n            },\n            {\n                \"id\": \"0c37921d-cd78-4fcc-a5d2-fb41c7eed9c2\",\n                \"name\": \"John Doe\",\n                \"email\": \"john8@example.com\",\n                \"mobile\": null,\n                \"photo_url\": null,\n                \"gender\": null,\n                \"account_type\": \"user\",\n                \"admin_group_id\": null,\n                \"email_verified_at\": null,\n                \"created_at\": \"2024-10-17\",\n                \"updated_at\": \"2024-10-17\",\n                \"deleted_at\": null\n            }\n        ],\n        \"links\": {\n            \"first\": \"http://127.0.0.1:8000/api/users?page=1\",\n            \"last\": \"http://127.0.0.1:8000/api/users?page=1\",\n            \"prev\": null,\n            \"next\": null\n        },\n        \"meta\": {\n            \"current_page\": 1,\n            \"from\": 1,\n            \"last_page\": 1,\n            \"links\": [\n                {\n                    \"url\": null,\n                    \"label\": \"&laquo; Previous\",\n                    \"active\": false\n                },\n                {\n                    \"url\": \"http://127.0.0.1:8000/api/users?page=1\",\n                    \"label\": \"1\",\n                    \"active\": true\n                },\n                {\n                    \"url\": null,\n                    \"label\": \"Next &raquo;\",\n                    \"active\": false\n                }\n            ],\n            \"path\": \"http://127.0.0.1:8000/api/users\",\n            \"per_page\": 15,\n            \"to\": 8,\n            \"total\": 8\n        }\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						},
+						{
+							"name": "Unauthenticated",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 08:08:03 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 08:08:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unauthenticated.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Single User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "d4447f83-afab-46b0-a450-d36518c1b068"
+								}
+							]
+						},
+						"description": "Retrieve details of a single user identified by `user_id`."
+					},
+					"response": []
+				},
+				{
+					"name": "restore delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/restore/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"restore",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "d4447f83-afab-46b0-a450-d36518c1b068"
+								}
+							]
+						},
+						"description": "Retrieve details of a single user identified by `user_id`."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/:userid",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":userid"
+							],
+							"variable": [
+								{
+									"key": "userid",
+									"value": "d4447f83-afab-46b0-a450-d36518c1b068",
+									"description": "uuid"
+								}
+							]
+						},
+						"description": "Soft delete a user identified by `user_id`."
+					},
+					"response": [
+						{
+							"name": "Delete User",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/users/:userid",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										":userid"
+									],
+									"variable": [
+										{
+											"key": "userid",
+											"value": "d4447f83-afab-46b0-a450-d36518c1b068",
+											"description": "uuid"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 07:36:17 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 07:36:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"lynx.deleted\",\n    \"result\": {\n        \"id\": \"d4447f83-afab-46b0-a450-d36518c1b068\"\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "force delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/force/delete/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"force",
+								"delete",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "d4447f83-afab-46b0-a450-d36518c1b068"
+								}
+							]
+						},
+						"description": "Retrieve details of a single user identified by `user_id`."
+					},
+					"response": [
+						{
+							"name": "force delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/users/force/delete/:userId",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"force",
+										"delete",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "cfd5cc7b-224d-4dc8-aab7-bd70c3213a9f"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 07:41:06 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 07:41:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "56"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"lynx.deleted\",\n    \"result\": {\n        \"id\": \"cfd5cc7b-224d-4dc8-aab7-bd70c3213a9f\"\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify the length of the response data\r",
+									"pm.test(\"The data object should have all required properties\", function () {\r",
+									"    const responseData = pm.response.json().data;\r",
+									"    const requiredProperties = [\"id\", \"name\", \"email\", \"account_type\", \"created_at\", \"updated_at\"];\r",
+									"    \r",
+									"    requiredProperties.forEach((property) => {\r",
+									"        pm.expect(responseData).to.have.property(property);\r",
+									"    });\r",
+									"});\r",
+									"// Verify the length of the response data\r",
+									"pm.test(\"The data object should have all required properties\", function () {\r",
+									"    const responseData = pm.response.json().data;\r",
+									"    const requiredProperties = [\"id\", \"name\", \"email\", \"account_type\", \"created_at\", \"updated_at\"];\r",
+									"    \r",
+									"    requiredProperties.forEach((property) => {\r",
+									"        pm.expect(responseData).to.have.property(property);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test to validate the response schema\r",
+									"pm.test(\"Schema is valid\", function () {\r",
+									"  var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"      data: {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"          id: { type: \"string\" },\r",
+									"          name: { type: \"string\" },\r",
+									"          email: { type: \"string\", format: \"email\" },\r",
+									"          account_type: { type: \"string\" },\r",
+									"          created_at: { type: \"string\", format: \"date-time\" },\r",
+									"          updated_at: { type: \"string\", format: \"date-time\" },\r",
+									"        },\r",
+									"        required: [\"id\", \"name\", \"email\", \"account_type\", \"created_at\", \"updated_at\"],\r",
+									"      },\r",
+									"      access_token: { type: \"string\" },\r",
+									"      token_type: { type: \"string\" },\r",
+									"      expires_in: { type: \"number\" },\r",
+									"    },\r",
+									"    required: [\"data\", \"access_token\", \"token_type\", \"expires_in\"],\r",
+									"  };\r",
+									"\r",
+									"  var response = pm.response.json();\r",
+									"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});\r",
+									"// Verify the length of the response data\r",
+									"pm.test(\"The data object should have all required properties\", function () {\r",
+									"    const responseData = pm.response.json().data;\r",
+									"    const requiredProperties = [\"id\", \"name\", \"email\", \"account_type\", \"created_at\", \"updated_at\"];\r",
+									"    \r",
+									"    requiredProperties.forEach((property) => {\r",
+									"        pm.expect(responseData).to.have.property(property);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test to validate the response schema\r",
+									"pm.test(\"Schema is valid\", function () {\r",
+									"  var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"      data: {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"          id: { type: \"string\" },\r",
+									"          name: { type: \"string\" },\r",
+									"          email: { type: \"string\", format: \"email\" },\r",
+									"          account_type: { type: \"string\" },\r",
+									"          created_at: { type: \"string\", format: \"date-time\" },\r",
+									"          updated_at: { type: \"string\", format: \"date-time\" },\r",
+									"        },\r",
+									"        required: [\"id\", \"name\", \"email\", \"account_type\", \"created_at\", \"updated_at\"],\r",
+									"      },\r",
+									"      access_token: { type: \"string\" },\r",
+									"      token_type: { type: \"string\" },\r",
+									"      expires_in: { type: \"number\" },\r",
+									"    },\r",
+									"    required: [\"data\", \"access_token\", \"token_type\", \"expires_in\"],\r",
+									"  };\r",
+									"\r",
+									"  var response = pm.response.json();\r",
+									"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Test to check if the response time is within an acceptable range\r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Access token should be a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.access_token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Access token should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Token type should be a string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.token_type).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Expires in should be a non-negative number\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.expires_in).to.be.a('number');\r",
+									"  pm.expect(responseData.expires_in).to.be.at.least(0, \"Expires in should be a non-negative number\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "john19@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"login"
+							]
+						},
+						"description": "### Login\n\nThis endpoint allows users to log in and obtain an access token.\n\n#### Request Body\n\n- This request requires a form-data body type.\n    \n\n#### Response\n\n- **Status:** 200\n    \n- **Content-Type:** application/json\n    \n- { \"data\": { \"id\": \"\", \"name\": \"\", \"email\": \"\", \"account_type\": \"\", \"admin_group_id\": null, \"created_at\": \"\", \"updated_at\": \"\" }, \"access_token\": \"\", \"token_type\": \"\", \"expires_in\": 0}\n    \n\n#### Example Response\n\n``` json\n{\n  \"data\": {\n    \"id\": \"\",\n    \"name\": \"\",\n    \"email\": \"\",\n    \"account_type\": \"\",\n    \"admin_group_id\": null,\n    \"created_at\": \"\",\n    \"updated_at\": \"\"\n  },\n  \"access_token\": \"\",\n  \"token_type\": \"\",\n  \"expires_in\": 0\n}\n\n ```\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"id\": { \"type\": \"string\" },\n        \"name\": { \"type\": \"string\" },\n        \"email\": { \"type\": \"string\" },\n        \"account_type\": { \"type\": \"string\" },\n        \"admin_group_id\": { \"type\": [\"string\", \"null\"] },\n        \"created_at\": { \"type\": \"string\" },\n        \"updated_at\": { \"type\": \"string\" }\n      }\n    },\n    \"access_token\": { \"type\": \"string\" },\n    \"token_type\": { \"type\": \"string\" },\n    \"expires_in\": { \"type\": \"integer\" }\n  }\n}\n\n ```"
+					},
+					"response": [
+						{
+							"name": "login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "john9@example.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/v1/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"v1",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:19:23 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:19:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "57"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"7ef81b96-d451-4be2-a4cb-49b0b539bc20\",\n        \"name\": \"John Doe\",\n        \"email\": \"john9@example.com\",\n        \"account_type\": \"user\",\n        \"admin_group_id\": null,\n        \"created_at\": \"2024-10-17\",\n        \"updated_at\": \"2024-10-17\"\n    },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL2xvZ2luIiwiaWF0IjoxNzI5MTM1MTYzLCJleHAiOjE3MjkxMzg3NjMsIm5iZiI6MTcyOTEzNTE2MywianRpIjoienF6Rm1hU05XVFo2c0lGNSIsInN1YiI6IjdlZjgxYjk2LWQ0NTEtNGJlMi1hNGNiLTQ5YjBiNTM5YmMyMCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.zYW1VZ0gEP3OOb00dCLThBx7i8VU9Dg5QN7Yf9EfoTY\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n}"
+						}
+					]
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.message).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Message is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "lang",
+									"value": "ar",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "logout",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "lang",
+											"value": "ar",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/v1/logout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"v1",
+										"logout"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:20:31 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:20:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unauthenticated.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "me",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "lang",
+									"value": "ar",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"me"
+							]
+						},
+						"description": "### Create User Profile\n\nThis endpoint allows the user to create a new user profile.\n\n#### Request Body\n\n- Form-Data\n    \n    - No parameters\n        \n\n#### Response\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"id\": {\"type\": \"string\"},\n        \"name\": {\"type\": \"string\"},\n        \"email\": {\"type\": \"string\"},\n        \"account_type\": {\"type\": \"string\"},\n        \"admin_group_id\": {\"type\": [\"string\", \"null\"]},\n        \"created_at\": {\"type\": \"string\"},\n        \"updated_at\": {\"type\": \"string\"}\n      }\n    }\n  }\n}\n\n ```"
+					},
+					"response": [
+						{
+							"name": "me",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "lang",
+											"value": "ar",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/v1/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"v1",
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:13:50 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:13:50 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"7ef81b96-d451-4be2-a4cb-49b0b539bc20\",\n        \"name\": \"John Doe\",\n        \"email\": \"john9@example.com\",\n        \"account_type\": \"user\",\n        \"admin_group_id\": null,\n        \"created_at\": \"2024-10-17\",\n        \"updated_at\": \"2024-10-17\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.data).to.have.property('id').that.is.a('string');\r",
+									"  pm.expect(responseData.data).to.have.property('name').that.is.a('string');\r",
+									"  pm.expect(responseData.data).to.have.property('email').that.is.a('string');\r",
+									"  pm.expect(responseData.data).to.have.property('account_type').that.is.a('string');\r",
+									"  pm.expect(responseData.data).to.have.property('created_at').that.is.a('string');\r",
+									"  pm.expect(responseData.data).to.have.property('updated_at').that.is.a('string');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email is in a valid format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData.data.email).to.be.a('string').and.to.match(/^.+@.+\\..+$/);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Access token is not empty\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.access_token).to.exist.and.to.not.be.empty;\r",
+									"});\r",
+									"// Verify the length of response data\r",
+									"pm.test(\"The response data length must be greater than zero\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"   \r",
+									"    pm.expect(Object.keys(responseData.data).length).to.be.greaterThan(0, \"Response data should not be empty\");\r",
+									"});\r",
+									"pm.test(\"Response Content-Type is application/json\", function () {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});\r",
+									"pm.test(\"Schema is valid\", function () {\r",
+									"  var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"      data: {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"          id: { type: \"string\" },\r",
+									"          name: { type: \"string\" },\r",
+									"          email: { type: \"string\", format: \"email\" },\r",
+									"          account_type: { type: \"string\" },\r",
+									"          admin_group_id: { type: [\"null\", \"string\"] },\r",
+									"          created_at: { type: \"string\" },\r",
+									"          updated_at: { type: \"string\" }\r",
+									"        },\r",
+									"        required: [\"id\", \"name\", \"email\", \"account_type\", \"created_at\", \"updated_at\"]\r",
+									"      },\r",
+									"      access_token: { type: \"string\" },\r",
+									"      token_type: { type: \"string\" },\r",
+									"      expires_in: { type: \"number\" }\r",
+									"    },\r",
+									"    required: [\"data\", \"access_token\", \"token_type\", \"expires_in\"]\r",
+									"  };\r",
+									"\r",
+									"  var response = pm.response.json();\r",
+									"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"  pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.property('data').that.is.an('object').and.has.all.keys('id', 'name', 'email', 'account_type', 'admin_group_id', 'created_at', 'updated_at');\r",
+									"    pm.expect(responseData).to.have.property('access_token');\r",
+									"    pm.expect(responseData).to.have.property('token_type');\r",
+									"    pm.expect(responseData).to.have.property('expires_in');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email is in a valid format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.data.email).to.be.a('string').and.to.match(/^.+@.+\\..+$/, \"Email is not in a valid format\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Access token is not empty\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.access_token).to.exist.and.to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john19@example.com\",\r\n  \"password\": \"password\",\r\n  \"password_confirmation\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						},
+						"description": "### Register User\n\nCreates a new user account.\n\n#### Request Body\n\n- Type: JSON\n    \n    - name (string): The name of the user.\n        \n    - email (string): The email of the user.\n        \n    - password (string): The password for the user account.\n        \n    - password_confirmation (string): The confirmation of the password.\n        \n\n#### Response\n\n- Content-Type: application/json\n    \n- Status: 201\n    \n- { \"data\": { \"id\": \"\", \"name\": \"\", \"email\": \"\", \"account_type\": \"\", \"admin_group_id\": null, \"created_at\": \"\", \"updated_at\": \"\" }, \"access_token\": \"\", \"token_type\": \"\", \"expires_in\": 0}\n    \n\n#### Response JSON Schema\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"id\": {\"type\": \"string\"},\n        \"name\": {\"type\": \"string\"},\n        \"email\": {\"type\": \"string\"},\n        \"account_type\": {\"type\": \"string\"},\n        \"admin_group_id\": {\"type\": [\"null\", \"string\"]},\n        \"created_at\": {\"type\": \"string\"},\n        \"updated_at\": {\"type\": \"string\"}\n      }\n    },\n    \"access_token\": {\"type\": \"string\"},\n    \"token_type\": {\"type\": \"string\"},\n    \"expires_in\": {\"type\": \"number\"}\n  }\n}\n\n ```"
+					},
+					"response": [
+						{
+							"name": "register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john9@example.com\",\r\n  \"password\": \"password\",\r\n  \"password_confirmation\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/v1/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:06:45 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 17 Oct 2024 03:06:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"7ef81b96-d451-4be2-a4cb-49b0b539bc20\",\n        \"name\": \"John Doe\",\n        \"email\": \"john9@example.com\",\n        \"account_type\": \"user\",\n        \"admin_group_id\": null,\n        \"created_at\": \"2024-10-17\",\n        \"updated_at\": \"2024-10-17\"\n    },\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL3JlZ2lzdGVyIiwiaWF0IjoxNzI5MTM0NDA1LCJleHAiOjE3MjkxMzgwMDUsIm5iZiI6MTcyOTEzNDQwNSwianRpIjoic0p3c0ZUWk9lUFZmQUoxSCIsInN1YiI6IjdlZjgxYjk2LWQ0NTEtNGJlMi1hNGNiLTQ5YjBiNTM5YmMyMCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.mTrOwndb1h_I2fXC2CdhLhd19WKpnqbAA_v179UUTvg\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Sample Category",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "This is a sample category",
+									"type": "text"
+								},
+								{
+									"key": "slug",
+									"value": "sample-category",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/:categoryId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								":categoryId"
+							],
+							"variable": [
+								{
+									"key": "categoryId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Updated Category\", \"description\": \"This is the updated category.\", \"slug\": \"updated-category\", \"status\": false}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/:categoryId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								":categoryId"
+							],
+							"variable": [
+								{
+									"key": "categoryId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/{{categoryId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore Soft-Deleted Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/restore/{{categoryId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"restore",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Force Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/force/delete/{{categoryId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"force",
+								"delete",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Group",
+			"item": [
+				{
+					"name": "Create Admin Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "بصثبثبصثب",
+									"description": "string",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/adminGroup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adminGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Admin Groups",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/adminGroup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adminGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Admin Group",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Updated Admin Group Name\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/adminGroup/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adminGroup",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Admin Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/adminGroup/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adminGroup",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore Soft-Deleted Admin Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/adminGroup/restore/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adminGroup",
+								"restore",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Force Delete Admin Group",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/adminGroup/force/delete/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adminGroup",
+								"force",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "blogs",
+			"item": [
+				{
+					"name": "Create Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "New Blog Post",
+									"description": "string ",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "Content of the new blog post",
+									"description": "long text ",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"description": "truel | false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/blogs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Blog",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "New Blog Post",
+											"description": "string ",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "Content of the new blog post",
+											"description": "long text ",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"description": "truel | false",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/blogs",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"blogs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:47:05 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:47:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"added successfully\",\n    \"result\": {\n        \"id\": \"00cbf046-6626-4c99-860b-bfd4abe84d29\"\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Blogs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/blogs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get All Blogs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/blogs",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"blogs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:47:32 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:47:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "56"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"The data has been queried successfully\",\n    \"result\": {\n        \"data\": [\n            {\n                \"id\": \"fd7b4f17-9cb1-44f6-bd33-27212ef29263\",\n                \"title\": \"Autem fuga autem sit incidunt.\",\n                \"content\": \"Adipisci voluptates soluta corrupti sequi eos natus voluptatem. Fugiat repudiandae et expedita est. Totam tenetur aspernatur libero et at. Velit dolor laboriosam sit. Incidunt incidunt exercitationem quas maxime.\",\n                \"status\": false,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"fa5d4a29-19bd-4bf5-9500-cb268813b997\",\n                \"title\": \"Animi explicabo et qui iste alias quod.\",\n                \"content\": \"Necessitatibus tenetur quia perspiciatis voluptatibus necessitatibus libero beatae. Voluptas aut itaque et ut nihil fugit. Iste aliquid perferendis omnis culpa. Omnis maxime similique ipsum eligendi est. Iste id nulla quia.\",\n                \"status\": false,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"f2dca1e0-aaae-469f-a971-ed7c9b425381\",\n                \"title\": \"Reiciendis dolorem qui incidunt rerum qui veritatis qui qui.\",\n                \"content\": \"Occaecati ut quae provident aliquid earum autem et. Ut repellendus ut omnis distinctio. Accusamus est rerum inventore beatae quis qui. Aperiam vel similique porro dolores quos vel.\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"ee67085d-b01a-40b6-b224-b7aad24378c4\",\n                \"title\": \"Autem est dolorem id neque.\",\n                \"content\": \"Quasi ipsam voluptatem et nobis qui sed et. Tempore illum corporis tempora. Laboriosam commodi quo sed nesciunt ea ut. Itaque omnis rerum quisquam modi corrupti officiis.\",\n                \"status\": false,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"ee222125-324b-4f6b-bc57-f098588bad18\",\n                \"title\": \"In sint qui qui ape\",\n                \"content\": \"Officia enim et itaqpofopkewokpewofpowe\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:33:12.000000Z\",\n                \"updated_at\": \"2024-10-19T11:33:12.000000Z\"\n            },\n            {\n                \"id\": \"ea956c9f-f216-4ab4-abbe-f7d0a583b5d9\",\n                \"title\": \"Eius eos esse laudantium.\",\n                \"content\": \"Voluptatibus labore sapiente molestiae occaecati officiis ab eaque. Non doloribus ea delectus voluptates tempore tempore labore. Vero minima eaque quia et et qui cupiditate. Nihil non aut voluptas voluptate pariatur. Fugit dolorem quod autem ipsa quidem magni rerum.\",\n                \"status\": false,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"e9b14a8a-ad9a-4731-9bba-0f27af146593\",\n                \"title\": \"Qui exercitationem autem unde quam hic dolore odio.\",\n                \"content\": \"At aspernatur aut consectetur tempore. Incidunt qui maiores ut illo exercitationem. Fugiat ex maiores ut mollitia tempora odio. Qui et deleniti praesentium culpa laboriosam perferendis quis perspiciatis.\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"db4dcd69-9258-4ce4-b60a-6204a726cd1b\",\n                \"title\": \"Perferendis qui enim ducimus porro vitae non.\",\n                \"content\": \"Eum tenetur aliquid assumenda. Ratione doloribus nulla est. Harum nemo sunt amet quibusdam quibusdam. Omnis rem alias eveniet et.\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"d0a547e9-7050-4a48-b7e0-81b0dcca8042\",\n                \"title\": \"Omnis a et ut sed vel modi molestiae et.\",\n                \"content\": \"Molestiae iure deleniti ducimus rerum facere voluptas. Enim quisquam sequi earum. Voluptatem nostrum doloremque molestiae quidem alias reprehenderit magnam. Ipsum reiciendis mollitia odio assumenda at numquam.\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"cb87d48c-3c35-4080-b3e6-d7d8be896c48\",\n                \"title\": \"Eos porro aut facere et.\",\n                \"content\": \"Ratione et rem est numquam expedita blanditiis. Voluptatem molestiae animi qui quasi facilis sint. Est delectus et cum. Quaerat dolorem sed ut qui qui voluptatibus delectus.\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"cb47684e-3129-4b70-bba3-05289a8d25e0\",\n                \"title\": \"Sint ab accusamus voluptas impedit labore fuga culpa.\",\n                \"content\": \"Alias vero nihil sapiente ipsa et. Aliquid iusto voluptatum nihil consequuntur aut consequatur necessitatibus. Magni tempora eum corporis.\",\n                \"status\": false,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"c1634cda-96df-4063-a01e-b4d5e1cc6e00\",\n                \"title\": \"Et aut dignissimos delectus.\",\n                \"content\": \"Expedita aut dolore velit. Rerum mollitia et quia quibusdam soluta consequatur. Et corporis aut vero omnis nobis inventore ut.\",\n                \"status\": false,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"bf5c8225-9e3f-403a-b829-b4986a81da39\",\n                \"title\": \"Consequatur itaque quia beatae aut animi vel corrupti.\",\n                \"content\": \"Iure neque ipsa quia sint excepturi aut. Quae veritatis illum placeat nobis aperiam perspiciatis qui nobis.\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"bc9582b1-677b-4df2-9858-9d12e5e0fd5f\",\n                \"title\": \"Molestiae ut soluta fugit expedita et.\",\n                \"content\": \"Ullam voluptatum quidem sit. Atque ea soluta et saepe quis commodi sed. Est laborum voluptatibus ea inventore facilis qui possimus. Voluptatibus non id doloribus vero.\",\n                \"status\": false,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            },\n            {\n                \"id\": \"b7e4f96c-af57-42df-9f28-6799f4d8dcf1\",\n                \"title\": \"Qui inventore itaque iusto fugiat ipsam qui.\",\n                \"content\": \"Ipsa repellendus earum voluptatem corrupti rem dignissimos quisquam. Consectetur qui molestiae officia fugit sit eos et. Laboriosam corrupti explicabo assumenda optio sunt aut fuga.\",\n                \"status\": true,\n                \"created_at\": \"2024-10-19T11:24:44.000000Z\",\n                \"updated_at\": \"2024-10-19T11:24:44.000000Z\"\n            }\n        ],\n        \"links\": {\n            \"first\": \"http://127.0.0.1:8000/api/blogs?page=1\",\n            \"last\": \"http://127.0.0.1:8000/api/blogs?page=4\",\n            \"prev\": null,\n            \"next\": \"http://127.0.0.1:8000/api/blogs?page=2\"\n        },\n        \"meta\": {\n            \"current_page\": 1,\n            \"from\": 1,\n            \"last_page\": 4,\n            \"links\": [\n                {\n                    \"url\": null,\n                    \"label\": \"&laquo; Previous\",\n                    \"active\": false\n                },\n                {\n                    \"url\": \"http://127.0.0.1:8000/api/blogs?page=1\",\n                    \"label\": \"1\",\n                    \"active\": true\n                },\n                {\n                    \"url\": \"http://127.0.0.1:8000/api/blogs?page=2\",\n                    \"label\": \"2\",\n                    \"active\": false\n                },\n                {\n                    \"url\": \"http://127.0.0.1:8000/api/blogs?page=3\",\n                    \"label\": \"3\",\n                    \"active\": false\n                },\n                {\n                    \"url\": \"http://127.0.0.1:8000/api/blogs?page=4\",\n                    \"label\": \"4\",\n                    \"active\": false\n                },\n                {\n                    \"url\": \"http://127.0.0.1:8000/api/blogs?page=2\",\n                    \"label\": \"Next &raquo;\",\n                    \"active\": false\n                }\n            ],\n            \"path\": \"http://127.0.0.1:8000/api/blogs\",\n            \"per_page\": 15,\n            \"to\": 15,\n            \"total\": 52\n        }\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Blog by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/blogs/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Blog Title\",\n  \"content\": \"Updated content of the blog\",\n  \"status\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/blogs/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Blog",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "New Blog Post",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "Content of the new blog post",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/blogs/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"blogs",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "fd7b4f17-9cb1-44f6-bd33-27212ef29263"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:49:06 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:49:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"updated successfully\",\n    \"result\": {\n        \"id\": \"fd7b4f17-9cb1-44f6-bd33-27212ef29263\"\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/blogs/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "fd7b4f17-9cb1-44f6-bd33-27212ef29263"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Blog",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/blogs/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"blogs",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "fd7b4f17-9cb1-44f6-bd33-27212ef29263"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:49:47 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:49:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"deleted successfully\",\n    \"result\": {\n        \"id\": \"fd7b4f17-9cb1-44f6-bd33-27212ef29263\"\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Restore Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/blogs/restore/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								"restore",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "fd7b4f17-9cb1-44f6-bd33-27212ef29263"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Force Delete Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/blogs/force/delete/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blogs",
+								"force",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f2dca1e0-aaae-469f-a971-ed7c9b425381"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Force Delete Blog",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/blogs/force/delete/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"blogs",
+										"force",
+										"delete",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "f2dca1e0-aaae-469f-a971-ed7c9b425381"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:50:45 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 Oct 2024 11:50:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.1.13"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Charset",
+									"value": "utf-8"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"deleted successfully\",\n    \"result\": {\n        \"id\": \"f2dca1e0-aaae-469f-a971-ed7c9b425381\"\n    },\n    \"meta\": null,\n    \"errors\": [],\n    \"errorCode\": 200\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "auth_token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL2xvZ2luIiwiaWF0IjoxNzI5MzM4MDMxLCJleHAiOjE3MjkzNDE2MzEsIm5iZiI6MTcyOTMzODAzMSwianRpIjoiZk12Nld6YWxsTlRxZ1dpSiIsInN1YiI6ImQyMjQyZDk0LTg1NDAtNDkzNy05NzA0LWMyMzNlOTRmNWIxZiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.pU8YerzZyYtQmrN_RZSdGBujLS3oSpToP5l2Rkt0NsU",
+			"type": "string"
+		},
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "base_url",
+			"value": "127.0.0.1:8000/api",
+			"type": "string"
+		}
+	]
+}

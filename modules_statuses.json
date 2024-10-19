@@ -2,5 +2,6 @@
     "User": true,
     "AdminGroup": true,
     "Auth": true,
-    "Category": true
+    "Category": true,
+    "Blog": true
 }
