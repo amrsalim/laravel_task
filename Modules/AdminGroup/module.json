@@ -1,0 +1,11 @@
+{
+    "name": "AdminGroup",
+    "alias": "admingroup",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AdminGroup\\App\\Providers\\AdminGroupServiceProvider"
+    ],
+    "files": []
+}

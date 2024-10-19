@@ -1,0 +1,6 @@
+{
+    "User": true,
+    "AdminGroup": true,
+    "Auth": true,
+    "Category": true
+}
